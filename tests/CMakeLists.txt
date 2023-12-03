@@ -1,0 +1,6 @@
+add_executable(matrix_test matrix_unittest.cpp)
+target_link_libraries(matrix_test Doctest CppMathLib)
+add_executable(vector_test vector_unittest.cpp)
+target_link_libraries(vector_test Doctest CppMathLib)
+add_test(NAME matrix_test COMMAND matrix_test)
+add_test(NAME vector_test COMMAND vector_test)
