@@ -36,14 +36,14 @@ TEST_CASE("Vec2: test_len_sq") {
     int x = 5;
     int y = 6;
 
-    Vec2i a(x,y);
+    Vec2i a(x, y);
     CHECK(x * x + y * y == a.length_sq());
 }
 TEST_CASE("Vec2: test_len") {
     int x = 5;
     int y = 6;
 
-    Vec2i a(x,y);
+    Vec2i a(x, y);
     CHECK(doctest::Approx(std::sqrt(x * x + y * y)) == a.length());
 }
 
@@ -51,7 +51,7 @@ TEST_CASE("Vec2: test_norm") {
     int x = 5;
     int y = 6;
 
-    Vec2i a(x,y);
+    Vec2i a(x, y);
     auto norm = a.normalized();
     CHECK(doctest::Approx(1.0f) == norm.length());
 }
@@ -60,7 +60,7 @@ TEST_CASE("Vec2: test_perp") {
     int x = 5;
     int y = 6;
 
-    Vec2i a(x,y);
+    Vec2i a(x, y);
     auto perp = a.perpendicular();
     CHECK(0 == a.dot(perp));
     CHECK(-y == perp.x);
@@ -71,7 +71,7 @@ TEST_CASE("Vec2: unary_minus_operator") {
     int x = 5;
     int y = 6;
 
-    Vec2i a(x,y);
+    Vec2i a(x, y);
     auto b = -a;
 
     CHECK(-x == b.x);
@@ -195,13 +195,12 @@ TEST_CASE("Vec2: diveq_by_scalar_operator") {
     CHECK(a.y == a_y / c);
 }
 
-
 TEST_CASE("Vec3: test_constructor") {
     int x = 5;
     int y = 6;
     int z = 7;
 
-    Vec3i a(x,y,z);
+    Vec3i a(x, y, z);
     CHECK(x == a.x);
     CHECK(y == a.y);
     CHECK(z == a.z);
@@ -212,7 +211,7 @@ TEST_CASE("Vec3: test_copy") {
     int y = 6;
     int z = 7;
 
-    Vec3i a(x,y,z);
+    Vec3i a(x, y, z);
     Vec3i b = a;
     b.x = 4;
     CHECK(a.x != b.x);
@@ -229,7 +228,6 @@ TEST_CASE("Vec3: test_dot_product") {
     int b_y = 3;
     int b_z = 3;
 
-
     Vec3i a(a_x, a_y, a_z);
     Vec3i b(b_x, b_y, b_z);
     CHECK(a_x * b_x + a_y * b_y + a_z * b_z == a.dot(b));
@@ -240,7 +238,7 @@ TEST_CASE("Vec3: test_len_sq") {
     int y = 6;
     int z = 7;
 
-    Vec3i a(x,y,z);
+    Vec3i a(x, y, z);
     CHECK(x * x + y * y + z * z == a.length_sq());
 }
 
@@ -249,7 +247,7 @@ TEST_CASE("Vec3: test_len") {
     int y = 6;
     int z = 7;
 
-    Vec3i a(x,y,z);
+    Vec3i a(x, y, z);
     CHECK(doctest::Approx(std::sqrt(x * x + y * y + z * z)) == a.length());
 }
 
@@ -258,7 +256,7 @@ TEST_CASE("Vec3: test_norm") {
     int y = 6;
     int z = 7;
 
-    Vec3i a(x,y,z);
+    Vec3i a(x, y, z);
     auto norm = a.normalized();
     CHECK(doctest::Approx(1.0f) == norm.length());
 }
@@ -268,7 +266,7 @@ TEST_CASE("Vec3: unary_minus_operator") {
     int y = 6;
     int z = 7;
 
-    Vec3i a(x,y,z);
+    Vec3i a(x, y, z);
     auto b = -a;
 
     CHECK(-x == b.x);
@@ -283,7 +281,6 @@ TEST_CASE("Vec3: plus_operator") {
     int b_x = 8;
     int b_y = 9;
     int b_z = 10;
-
 
     Vec3i a(a_x, a_y, a_z);
     Vec3i b(b_x, b_y, b_z);
@@ -301,7 +298,6 @@ TEST_CASE("Vec3: minus_operator") {
     int b_x = 8;
     int b_y = 9;
     int b_z = 10;
-
 
     Vec3i a(a_x, a_y, a_z);
     Vec3i b(b_x, b_y, b_z);

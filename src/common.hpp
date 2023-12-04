@@ -1,6 +1,6 @@
 #pragma once
-#include <type_traits>
 #include <concepts>
+#include <type_traits>
 
-template<typename T>
+template <typename T>
 concept arithmetic = std::is_arithmetic_v<T>;
