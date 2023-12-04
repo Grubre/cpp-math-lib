@@ -1,39 +1,172 @@
 #pragma once
 #include "common.hpp"
 #include "matrix.hpp"
+#include <array>
 #include <cmath>
 #include <concepts>
 #include <ostream>
 
-template <arithmetic T, std::floating_point F = double> class Vec2;
-template <arithmetic T, std::floating_point F = double> class Vec3;
-
-template <arithmetic T, std::floating_point F> class Vec3 {
+template <arithmetic T, unsigned int Dim, std::floating_point F = double>
+class Vec {
   public:
-    T x;
-    T y;
-    T z;
-
-    constexpr Vec3() : x(0), y(0), z(0) {}
-    explicit Vec3(Vec2<T> vec) : x(vec.x), y(vec.y), z(0) {}
-    constexpr Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
-
-    constexpr T dot(const Vec3<T> &rhs) const {
-        return x * rhs.x + y * rhs.y + z * rhs.z;
+    constexpr Vec() : vals{0} {}
+    template <unsigned int RHDim> explicit Vec(const Vec<T, RHDim, F> &rhs) {
+        for (auto i = 0u; i < std::min(RHDim, Dim); i++) {
+            vals[i] = rhs[i];
+        }
     }
 
-    constexpr T length_sq() const { return x * x + y * y + z * z; }
+    constexpr T &operator[](int i) const { return vals[i]; }
+    constexpr T &operator[](int i) { return vals[i]; }
+
+    constexpr T dot(const Vec<T, Dim, F> &rhs) const {
+        T sum = 0;
+        for (int i = 0; i < Dim; i++) {
+            sum += vals[i] * rhs.vals[i];
+        }
+        return sum;
+    }
+
+    constexpr F length_sq() const {
+        F sum = 0;
+        for (int i = 0; i < Dim; i++) {
+            sum += vals[i] * vals[i];
+        }
+        return sum;
+    }
 
     constexpr F length() const { return std::sqrt(length_sq()); }
 
-    constexpr Vec3<F> normalized() const {
+    constexpr Vec<F, Dim, F> normalized() const {
         F len = length();
-        return Vec3<F>(x / len, y / len, z / len);
+        Vec<F, Dim, F> normalized;
+        for (int i = 0; i < Dim; i++) {
+            normalized[i] = vals[i] / len;
+        }
+        return normalized;
     }
 
-    constexpr Vec3<F> interpolate(F scalar) const {
-        return (*this) * scalar;
+    constexpr Vec<F, Dim, F> interpolate(F scalar) const {
+        Vec<F, Dim, F> interpolated;
+        for (int i = 0; i < Dim; i++) {
+            interpolated.vals[i] = vals[i] * scalar;
+        }
+        return interpolated;
     }
+
+  protected:
+    std::array<T, Dim> vals;
+};
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> operator-(Vec<T, Dim, F> rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        rhs[i] = -rhs[i];
+    }
+    return rhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> operator+(Vec<T, Dim, F> lhs, const Vec<T, Dim, F> &rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] += rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> &operator+=(Vec<T, Dim, F> &lhs, const Vec<T, Dim, F> &rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] += rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> operator-(Vec<T, Dim, F> lhs, const Vec<T, Dim, F> &rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] -= rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> &operator-=(Vec<T, Dim, F> &lhs, const Vec<T, Dim, F> &rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] -= rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> operator*(T lhs, const Vec<T, Dim, F> &rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] *= rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> operator*(const Vec<T, Dim, F> &lhs, T rhs) {
+    return rhs * lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> &operator*=(Vec<T, Dim, F> &lhs, const T rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] *= rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> operator/(const Vec<T, Dim, F> &lhs, T rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] /= rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+Vec<T, Dim, F> &operator/=(Vec<T, Dim, F> &lhs, const T rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        lhs[i] /= rhs[i];
+    }
+    return lhs;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+bool operator==(const Vec<T, Dim, F> &lhs, const Vec<T, Dim, F> &rhs) {
+    for (auto i = 0u; i < Dim; i++) {
+        if (lhs[i] != rhs[i])
+            return false;
+    }
+    return true;
+}
+
+template <arithmetic T, unsigned int Dim, std::floating_point F>
+std::ostream &operator<<(std::ostream &out, const Vec<T, Dim, F> &vec) {
+    for (auto i = 0u; i < Dim; i++) {
+        out << vec[i];
+        if (i < Dim - 1)
+            out << " ";
+    }
+    return out;
+}
+
+template <arithmetic T, std::floating_point F = double> class Vec2;
+template <arithmetic T, std::floating_point F = double> class Vec3;
+
+template <arithmetic T, std::floating_point F>
+class Vec3 : public Vec<T, 3, F> {
+  public:
+    T &x = this->vals[0];
+    T &y = this->vals[1];
+    T &z = this->vals[2];
+
+    constexpr Vec3() : Vec<T, 3, F>{} {}
+    constexpr Vec3(T x, T y, T z) {this->vals ={x,y,z}; }
+    constexpr Vec3(Vec3 const &rhs) {this->vals = rhs.vals; this->x = this->vals[0]; this->y = this->vals[1]; this->z = this->vals[2];}
 };
 
 using Vec3i = Vec3<int>;
@@ -41,31 +174,17 @@ using Vec3u = Vec3<unsigned int>;
 using Vec3d = Vec3<double>;
 using Vec3f = Vec3<float>;
 
-template <arithmetic T, std::floating_point F> class Vec2 {
+template <arithmetic T, std::floating_point F>
+class Vec2 : public Vec<T, 2, F> {
   public:
-    T x;
-    T y;
+    T &x = this->vals[0];
+    T &y = this->vals[1];
 
-    constexpr Vec2() : x(0), y(0) {}
-    explicit Vec2(Vec3<T> vec) : x(vec.x), y(vec.y) {}
-    constexpr Vec2(T x, T y) : x(x), y(y) {}
-
-    constexpr T dot(const Vec2<T> &rhs) const { return x * rhs.x + y * rhs.y; }
-
-    constexpr T length_sq() const { return x * x + y * y; }
-
-    constexpr F length() const { return std::sqrt(length_sq()); }
-
-    constexpr Vec2<F> normalized() const {
-        F len = length();
-        return Vec2<F>(x / len, y / len);
-    }
+    constexpr Vec2() : Vec<T, 2, F>{} {}
+    constexpr Vec2(T x, T y) {this->vals = {x,y};}
+    constexpr Vec2(Vec2 const &rhs) {this->vals = rhs.vals; this->x = this->vals[0]; this->y = this->vals[1];}
 
     constexpr Vec2<T> perpendicular() const { return {-y, x}; }
-
-    constexpr Vec2<F> interpolate(F scalar) const {
-        return (*this) * scalar;
-    }
 };
 
 using Vec2i = Vec2<int>;

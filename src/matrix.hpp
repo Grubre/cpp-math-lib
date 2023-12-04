@@ -7,7 +7,8 @@
 #include <ostream>
 #include <type_traits>
 
-template <unsigned int Rows, unsigned int Cols, arithmetic T = double> class Matrix {
+template <unsigned int Rows, unsigned int Cols, arithmetic T = double>
+class Matrix {
   public:
     Matrix() { std::fill(vals.begin(), vals.end(), T()); };
     Matrix(const Matrix &rhs) {
