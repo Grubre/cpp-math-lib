@@ -2,12 +2,13 @@
 #include "common.hpp"
 #include "matrix.hpp"
 #include <cmath>
+#include <concepts>
 #include <ostream>
 
-template <arithmetic T> class Vec2;
-template <arithmetic T> class Vec3;
+template <arithmetic T, std::floating_point F = double> class Vec2;
+template <arithmetic T, std::floating_point F = double> class Vec3;
 
-template <arithmetic T> class Vec3 {
+template <arithmetic T, std::floating_point F> class Vec3 {
   public:
     T x;
     T y;
@@ -23,14 +24,14 @@ template <arithmetic T> class Vec3 {
 
     constexpr T length_sq() const { return x * x + y * y + z * z; }
 
-    constexpr float length() const { return std::sqrt(length_sq()); }
+    constexpr F length() const { return std::sqrt(length_sq()); }
 
-    constexpr Vec3<float> normalized() const {
-        float len = length();
-        return Vec3<float>(x / len, y / len, z / len);
+    constexpr Vec3<F> normalized() const {
+        F len = length();
+        return Vec3<F>(x / len, y / len, z / len);
     }
 
-    constexpr Vec3<float> interpolate(float scalar) const {
+    constexpr Vec3<F> interpolate(F scalar) const {
         return (*this) * scalar;
     }
 };
@@ -40,7 +41,7 @@ using Vec3u = Vec3<unsigned int>;
 using Vec3d = Vec3<double>;
 using Vec3f = Vec3<float>;
 
-template <arithmetic T> class Vec2 {
+template <arithmetic T, std::floating_point F> class Vec2 {
   public:
     T x;
     T y;
@@ -53,16 +54,16 @@ template <arithmetic T> class Vec2 {
 
     constexpr T length_sq() const { return x * x + y * y; }
 
-    constexpr float length() const { return std::sqrt(length_sq()); }
+    constexpr F length() const { return std::sqrt(length_sq()); }
 
-    constexpr Vec2<float> normalized() const {
-        float len = length();
-        return Vec2<float>(x / len, y / len);
+    constexpr Vec2<F> normalized() const {
+        F len = length();
+        return Vec2<F>(x / len, y / len);
     }
 
     constexpr Vec2<T> perpendicular() const { return {-y, x}; }
 
-    constexpr Vec2<float> interpolate(float scalar) const {
+    constexpr Vec2<F> interpolate(F scalar) const {
         return (*this) * scalar;
     }
 };

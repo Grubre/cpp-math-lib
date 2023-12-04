@@ -7,16 +7,16 @@
 #include <ostream>
 #include <type_traits>
 
-template <unsigned int R, unsigned int C, arithmetic T = float> class Matrix {
+template <unsigned int Rows, unsigned int Cols, arithmetic T = double> class Matrix {
   public:
     Matrix() { std::fill(vals.begin(), vals.end(), T()); };
     Matrix(const Matrix &rhs) {
         std::copy(rhs.vals.begin(), rhs.vals.end(), vals.begin());
     }
-    T &get(unsigned int x, unsigned int y) { return vals[x + y * C]; }
+    T &get(unsigned int x, unsigned int y) { return vals[x + y * Cols]; }
     T &operator()(unsigned int x, unsigned int y) { return get(x, y); }
     const T &get(unsigned int x, unsigned int y) const {
-        return vals[x + y * C];
+        return vals[x + y * Cols];
     }
     const T &operator()(unsigned int x, unsigned int y) const {
         return get(x, y);
@@ -24,8 +24,8 @@ template <unsigned int R, unsigned int C, arithmetic T = float> class Matrix {
 
     Matrix transposed() const {
         Matrix t;
-        for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C; j++) {
+        for (int i = 0; i < Rows; i++) {
+            for (int j = 0; j < Cols; j++) {
                 t.vals[j][i] = vals[i][j];
             }
         }
@@ -44,14 +44,14 @@ template <unsigned int R, unsigned int C, arithmetic T = float> class Matrix {
 
     Matrix operator+(const Matrix &rhs) {
         Matrix matrix;
-        for (int i = 0; i < R * C; i++) {
+        for (int i = 0; i < Rows * Cols; i++) {
             matrix.vals[i] = vals[i] + rhs.vals[i];
         }
         return matrix;
     }
 
     Matrix &operator+=(const Matrix &rhs) {
-        for (int i = 0; i < R * C; i++) {
+        for (int i = 0; i < Rows * Cols; i++) {
             vals[i] = vals[i] + rhs.vals[i];
         }
         return *this;
@@ -59,34 +59,34 @@ template <unsigned int R, unsigned int C, arithmetic T = float> class Matrix {
 
     Matrix operator-(const Matrix &rhs) {
         Matrix matrix;
-        for (int i = 0; i < R * C; i++) {
+        for (int i = 0; i < Rows * Cols; i++) {
             matrix.vals[i] = vals[i] - rhs.vals[i];
         }
         return matrix;
     }
 
     Matrix &operator-=(const Matrix &rhs) {
-        for (int i = 0; i < R * C; i++) {
+        for (int i = 0; i < Rows * Cols; i++) {
             vals[i] = vals[i] - rhs.vals[i];
         }
         return *this;
     }
 
-    template <unsigned bC>
-    Matrix<R, bC, T> operator*(const Matrix<C, bC, T> &rhs) {
-        Matrix<R, bC, T> r;
-        for (int i = 0; i < bC; i++) {
-            for (int j = 0; j < R; j++) {
+    template <unsigned RHCols>
+    Matrix<Rows, RHCols, T> operator*(const Matrix<Cols, RHCols, T> &rhs) {
+        Matrix<Rows, RHCols, T> r;
+        for (int i = 0; i < RHCols; i++) {
+            for (int j = 0; j < Rows; j++) {
                 T s = T();
-                for (int k = 0; k < C; k++) {
-                    s += vals[C * j + k] * vals[bC * k + i];
+                for (int k = 0; k < Cols; k++) {
+                    s += vals[Cols * j + k] * vals[RHCols * k + i];
                 }
-                r.vals[j * bC + i] = s;
+                r.vals[j * RHCols + i] = s;
             }
         }
         return r;
     }
 
   protected:
-    std::array<T, R * C> vals;
+    std::array<T, Rows * Cols> vals;
 };
