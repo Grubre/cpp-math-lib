@@ -4,30 +4,38 @@
 #include <array>
 #include <cmath>
 #include <concepts>
+#include <initializer_list>
 #include <ostream>
+#include <span>
 #include <type_traits>
 
 template <unsigned int Rows, unsigned int Cols, arithmetic T = double>
 class Matrix {
   public:
     Matrix() { std::fill(vals.begin(), vals.end(), T()); };
-    Matrix(const Matrix &rhs) {
-        std::copy(rhs.vals.begin(), rhs.vals.end(), vals.begin());
-    }
-    T &get(unsigned int x, unsigned int y) { return vals[x + y * Cols]; }
-    T &operator()(unsigned int x, unsigned int y) { return get(x, y); }
-    const T &get(unsigned int x, unsigned int y) const {
-        return vals[x + y * Cols];
-    }
-    const T &operator()(unsigned int x, unsigned int y) const {
-        return get(x, y);
+    Matrix(const std::initializer_list<T> &list) {
+        std::copy(list.begin(), list.end(), vals.begin());
     }
 
-    Matrix transposed() const {
-        Matrix t;
+    // TODO: Think whether mdspan is more appropriate since this addressing this
+    // is in the form [y][x] and with mdspan it could be [x, y]
+    std::span<T, Cols> operator[](unsigned int y) {
+        return std::span<T, Cols>(vals.data() + y * Cols, Cols);
+    }
+    std::span<T const, Cols> operator[](unsigned int y) const {
+        return std::span<T const, Cols>(vals.data() + y * Cols, Cols);
+    }
+
+    T &get(unsigned int y, unsigned int x) { return vals[x + y * Cols]; }
+    const T &get(unsigned int y, unsigned int x) const {
+        return vals[x + y * Cols];
+    }
+
+    Matrix<Cols, Rows, T> transposed() const {
+        Matrix<Cols, Rows, T> t;
         for (int i = 0; i < Rows; i++) {
             for (int j = 0; j < Cols; j++) {
-                t.vals[j][i] = vals[i][j];
+                t[j][i] = get(i, j);
             }
         }
         return t;
@@ -91,3 +99,17 @@ class Matrix {
   protected:
     std::array<T, Rows * Cols> vals;
 };
+
+template <unsigned int Rows, unsigned int Cols, arithmetic T>
+std::ostream &operator<<(std::ostream &os, const Matrix<Rows, Cols, T> &m) {
+    for (int i = 0; i < Rows; i++) {
+        os << "[";
+        for (int j = 0; j < Cols; j++) {
+            os << m[i][j];
+            if (j != Cols - 1)
+                os << " ";
+        }
+        os << "]\n";
+    }
+    return os;
+}

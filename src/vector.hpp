@@ -165,8 +165,13 @@ class Vec3 : public Vec<T, 3, F> {
     T &z = this->vals[2];
 
     constexpr Vec3() : Vec<T, 3, F>{} {}
-    constexpr Vec3(T x, T y, T z) {this->vals ={x,y,z}; }
-    constexpr Vec3(Vec3 const &rhs) {this->vals = rhs.vals; this->x = this->vals[0]; this->y = this->vals[1]; this->z = this->vals[2];}
+    constexpr Vec3(T x, T y, T z) { this->vals = {x, y, z}; }
+    constexpr Vec3(Vec3 const &rhs) {
+        this->vals = rhs.vals;
+        this->x = this->vals[0];
+        this->y = this->vals[1];
+        this->z = this->vals[2];
+    }
 };
 
 using Vec3i = Vec3<int>;
@@ -181,8 +186,12 @@ class Vec2 : public Vec<T, 2, F> {
     T &y = this->vals[1];
 
     constexpr Vec2() : Vec<T, 2, F>{} {}
-    constexpr Vec2(T x, T y) {this->vals = {x,y};}
-    constexpr Vec2(Vec2 const &rhs) {this->vals = rhs.vals; this->x = this->vals[0]; this->y = this->vals[1];}
+    constexpr Vec2(T x, T y) { this->vals = {x, y}; }
+    constexpr Vec2(Vec2 const &rhs) {
+        this->vals = rhs.vals;
+        this->x = this->vals[0];
+        this->y = this->vals[1];
+    }
 
     constexpr Vec2<T> perpendicular() const { return {-y, x}; }
 };
@@ -192,6 +201,7 @@ using Vec2u = Vec2<unsigned int>;
 using Vec2d = Vec2<double>;
 using Vec2f = Vec2<float>;
 
+// TODO: Check whether the specialized functions make the code faster
 template <arithmetic T> Vec2<T> operator-(const Vec2<T> &rhs) {
     return Vec2(-rhs.x, -rhs.y);
 }
@@ -232,7 +242,6 @@ template <arithmetic T> Vec2<T> &operator*=(Vec2<T> &lhs, const T rhs) {
     return lhs;
 }
 
-// divide by a scalar
 template <arithmetic T> Vec2<T> operator/(const Vec2<T> &lhs, T rhs) {
     return Vec2(lhs.x / rhs, lhs.y / rhs);
 }
@@ -269,7 +278,6 @@ template <arithmetic T> Vec3<T> &operator+=(Vec3<T> &lhs, const Vec3<T> &rhs) {
     return lhs;
 }
 
-// odejmowanie
 template <arithmetic T>
 Vec3<T> operator-(const Vec3<T> &lhs, const Vec3<T> &rhs) {
     return Vec3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
