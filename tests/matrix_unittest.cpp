@@ -3,46 +3,186 @@
 #include "matrix.hpp"
 
 TEST_CASE("Matrix: default constructor") {
-    Matrix<3, 2, int> a{};
-    CHECK(a.get(0, 0) == 0);
-    CHECK(a.get(0, 1) == 0);
-    CHECK(a.get(1, 0) == 0);
-    CHECK(a.get(1, 1) == 0);
-    CHECK(a.get(2, 0) == 0);
-    CHECK(a.get(2, 1) == 0);
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS, int> a{};
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(a.get(i, j) == 0);
+        }
+    }
+}
+
+TEST_CASE("Matrix: initializer list constructor") {
+    Matrix<3, 2, int> a{0, 1, 2, 3, 4, 5};
+
+    for (auto i = 0u; i < 3; i++) {
+        for (auto j = 0u; j < 2; j++) {
+            CHECK(a.get(i, j) == i * 2 + j);
+        }
+    }
 }
 
 TEST_CASE("Matrix: copy") {
-    Matrix<3, 2, int> a{};
-    Matrix<3, 2, int> b = a;
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS, int> a{};
+    Matrix<ROWS, COLS, int> b = a;
     b.get(0, 0) = 1;
-    CHECK(a.get(0, 0) != b.get(0, 0));
-    CHECK(a.get(0, 1) == b.get(0, 1));
-    CHECK(a.get(1, 0) == b.get(1, 0));
-    CHECK(a.get(1, 1) == b.get(1, 1));
-    CHECK(a.get(2, 0) == b.get(2, 0));
-    CHECK(a.get(2, 1) == b.get(2, 1));
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(a.get(i, j) == 0);
+        }
+    }
 }
 
 TEST_CASE("Matrix: operator []") {
-    Matrix<3, 2, int> a{};
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS, int> a{};
     a[0][0] = 1;
-    CHECK(a.get(0, 0) == a[0][0]);
-    CHECK(a.get(1, 0) == a[1][0]);
-    CHECK(a.get(0, 1) == a[0][1]);
-    CHECK(a.get(1, 1) == a[1][1]);
-    CHECK(a.get(0, 2) == a[0][2]);
-    CHECK(a.get(1, 2) == a[1][2]);
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(a.get(i, j) == a[i][j]);
+        }
+    }
 }
 
 TEST_CASE("Matrix: transposed") {
-    Matrix<2, 3> a{0, 1, 2, 3, 4, 5};
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
 
-    Matrix<3, 2> b = a.transposed();
+    Matrix<COLS, ROWS> b = a.transposed();
 
     for (auto i = 0u; i < 2; i++) {
         for (auto j = 0u; j < 3; j++) {
-            CHECK(a.get(i, j) == b.get(j, i));
+            CHECK(b.get(i, j) == a.get(j, i));
+        }
+    }
+}
+
+TEST_CASE("Matrix: operator unary -") {
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
+
+    Matrix<ROWS, COLS> b = -a;
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(a.get(i, j) == -b.get(i, j));
+        }
+    }
+}
+
+TEST_CASE("Matrix: operator +") {
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
+    Matrix<ROWS, COLS> b{0, 1, 2, 3, 4, 5};
+
+    Matrix<ROWS, COLS> c = a + b;
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(c.get(i, j) == a.get(i, j) + b.get(i, j));
+        }
+    }
+}
+
+TEST_CASE("Matrix: operator +=") {
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
+    Matrix<ROWS, COLS> b{0, 1, 2, 3, 4, 5};
+
+    a += b;
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(a.get(i, j) == 2 * b.get(i, j));
+        }
+    }
+}
+
+TEST_CASE("Matrix: operator binary -") {
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
+    Matrix<ROWS, COLS> b{0, 1, 2, 3, 4, 5};
+
+    Matrix<ROWS, COLS> c = a - b;
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(c.get(i, j) == a.get(i, j) - b.get(i, j));
+        }
+    }
+}
+
+TEST_CASE("Matrix: operator -=") {
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
+    Matrix<ROWS, COLS> b{0, 1, 2, 3, 4, 5};
+
+    a -= b;
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(a.get(i, j) == 0);
+        }
+    }
+}
+
+TEST_CASE("Matrix: operator * by another matrix") {
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    constexpr auto RHCOLS = 4;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
+    Matrix<COLS, RHCOLS> b{0, 1, 2, 3, 4, 5, 6, 7};
+
+    Matrix<ROWS, RHCOLS> c = a * b;
+
+    for (auto row = 0u; row < ROWS; row++) {
+        for (auto col = 0u; col < RHCOLS; col++) {
+            auto sum = 0;
+            for (auto k = 0u; k < COLS; k++) {
+                sum += a.get(row, k) * b.get(k, col);
+            }
+            CHECK(c.get(row, col) == sum);
+        }
+    }
+}
+
+TEST_CASE("Matrix: identity") {
+    constexpr auto N = 3;
+    auto id = Matrix<N, N>::identity();
+    Matrix<N, N> a{0, 1, 2, 3, 4, 5, 6, 7, 8};
+    Matrix<N, N> b = a * id;
+
+    for (auto i = 0u; i < N; i++) {
+        for (auto j = 0u; j < N; j++) {
+            CHECK(a.get(i, j) == b.get(i, j));
+        }
+    }
+}
+
+TEST_CASE("Matrix: operator * by a scalar") {
+    constexpr auto ROWS = 3;
+    constexpr auto COLS = 2;
+    constexpr auto SCALAR = 2;
+    Matrix<ROWS, COLS> a{0, 1, 2, 3, 4, 5};
+
+    Matrix<ROWS, COLS> b = a * SCALAR;
+
+    for (auto i = 0u; i < ROWS; i++) {
+        for (auto j = 0u; j < COLS; j++) {
+            CHECK(b.get(i, j) == a.get(i, j) * SCALAR);
         }
     }
 }

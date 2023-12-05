@@ -6,7 +6,10 @@
 #include <concepts>
 #include <ostream>
 
-template <arithmetic T, unsigned int Dim, std::floating_point F = double>
+using default_f_type = double;
+
+template <arithmetic T, unsigned int Dim,
+          std::floating_point F = default_f_type>
 class Vec {
   public:
     constexpr Vec() : vals{0} {}
@@ -154,8 +157,8 @@ std::ostream &operator<<(std::ostream &out, const Vec<T, Dim, F> &vec) {
     return out;
 }
 
-template <arithmetic T, std::floating_point F = double> class Vec2;
-template <arithmetic T, std::floating_point F = double> class Vec3;
+template <arithmetic T, std::floating_point F = default_f_type> class Vec2;
+template <arithmetic T, std::floating_point F = default_f_type> class Vec3;
 
 template <arithmetic T, std::floating_point F>
 class Vec3 : public Vec<T, 3, F> {
