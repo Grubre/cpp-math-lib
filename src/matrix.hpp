@@ -9,6 +9,8 @@
 #include <span>
 #include <type_traits>
 
+namespace cml {
+
 template <typename T>
 concept SquareMatrix = requires {
     { T::RowsCnt } -> std::convertible_to<unsigned int>;
@@ -16,11 +18,12 @@ concept SquareMatrix = requires {
     requires T::RowsCnt == T::ColsCnt;
 };
 
-template <unsigned int Rows, unsigned int Cols, arithmetic T = double>
+template <unsigned int Rows, unsigned int Cols, arithmetic T = default_type>
 class Matrix {
   public:
     static constexpr auto RowsCnt = Rows;
     static constexpr auto ColsCnt = Cols;
+
     Matrix() { std::fill(vals.begin(), vals.end(), T()); };
     Matrix(const std::initializer_list<T> &list) {
         std::copy(list.begin(), list.end(), vals.begin());
@@ -143,3 +146,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix<Rows, Cols, T> &m) {
     }
     return os;
 }
+
+template <arithmetic T = default_type> using Mat4 = Matrix<4, 4, T>;
+template <arithmetic T = default_type> using Mat3 = Matrix<3, 3, T>;
+} // namespace cml

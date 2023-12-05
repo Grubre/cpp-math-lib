@@ -6,7 +6,9 @@
 #include <concepts>
 #include <ostream>
 
-using default_f_type = double;
+namespace cml {
+
+using default_f_type = default_type;
 
 template <arithmetic T, unsigned int Dim,
           std::floating_point F = default_f_type>
@@ -328,3 +330,5 @@ template <arithmetic T>
 std::ostream &operator<<(std::ostream &out, const Vec3<T> &vec) {
     return out << vec.x << " " << vec.y << " " << vec.z;
 }
+
+} // namespace cml
