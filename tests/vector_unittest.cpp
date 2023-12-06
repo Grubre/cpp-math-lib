@@ -442,3 +442,10 @@ TEST_CASE("Vec: operator []") {
     CHECK(2 == a[1]);
     CHECK(3 == a[2]);
 }
+
+TEST_CASE("Vec: initializer_list constructor") {
+    Vec3i a{1, 2, 3};
+    CHECK(1 == a[0]);
+    CHECK(2 == a[1]);
+    CHECK(3 == a[2]);
+}
