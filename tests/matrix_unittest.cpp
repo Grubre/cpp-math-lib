@@ -2,6 +2,8 @@
 #include "doctest/doctest.h"
 #include "matrix.hpp"
 
+using namespace cml;
+
 TEST_CASE("Matrix: default constructor") {
     constexpr auto ROWS = 3;
     constexpr auto COLS = 2;

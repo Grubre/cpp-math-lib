@@ -1,6 +1,9 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest/doctest.h"
 #include "vector.hpp"
+
+using namespace cml;
+
 TEST_CASE("Vec2: test_constructor") {
     int x = 5;
     int y = 6;

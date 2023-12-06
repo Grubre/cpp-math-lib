@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main() {
-    Matrix<2, 2> a;
+    cml::Matrix<2, 2> a;
     // a[0][0] = 1;
 
     auto b = -a;

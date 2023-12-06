@@ -188,13 +188,13 @@ using Vec3u = Vec3<unsigned int>;
 using Vec3d = Vec3<double>;
 using Vec3f = Vec3<float>;
 
-template <arithmetic T, std::floating_point F>
-class Vec2 : public Vec<T, 2, F> {
+template <arithmetic T, std::floating_point LenT>
+class Vec2 : public Vec<T, 2, LenT> {
   public:
     T &x = this->vals[0];
     T &y = this->vals[1];
 
-    constexpr Vec2() : Vec<T, 2, F>{} {}
+    constexpr Vec2() : Vec<T, 2, LenT>{} {}
     constexpr Vec2(T x, T y) { this->vals = {x, y}; }
     constexpr Vec2(Vec2 const &rhs) {
         this->vals = rhs.vals;
