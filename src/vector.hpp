@@ -15,7 +15,9 @@ template <arithmetic T, unsigned int Dim,
 class Vec {
   public:
     constexpr Vec() : vals{0} {}
-    constexpr Vec(std::initializer_list<T> list) : vals(list) {}
+    constexpr Vec(std::initializer_list<T> list) {
+        std::copy(list.begin(), list.end(), vals.begin());
+    }
     template <unsigned int RHDim> explicit Vec(const Vec<T, RHDim, LenT> &rhs) {
         for (auto i = 0u; i < std::min(RHDim, Dim); i++) {
             vals[i] = rhs[i];
