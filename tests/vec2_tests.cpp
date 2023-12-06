@@ -9,7 +9,7 @@ TEST_CASE_TEMPLATE("Vec2: test_constructor", T, ARITHMETIC_TYPES) {
     T x = 5;
     T y = 6;
 
-    Vec2<T> a{x, y};
+    Vec2<T> a(x, y);
     CHECK(x == a.x());
     CHECK(y == a.y());
 }

@@ -50,3 +50,17 @@ TEST_CASE_TEMPLATE("Vec: initializer_list constructor", T, ARITHMETIC_TYPES) {
     CHECK(T(2) == a[2]);
     CHECK(T(3) == a[3]);
 }
+
+TEST_CASE_TEMPLATE("Vec: Accessors", T, ARITHMETIC_TYPES) {
+    Vec<T, 4> a;
+    std::iota(a.begin(), a.end(), T(0));
+
+    CHECK(a.r() == a[0]);
+    CHECK(a.g() == a[1]);
+    CHECK(a.b() == a[2]);
+    CHECK(a.a() == a[3]);
+
+    CHECK(a.x() == a[0]);
+    CHECK(a.y() == a[1]);
+    CHECK(a.z() == a[2]);
+}
