@@ -417,3 +417,28 @@ TEST_CASE("Vec3: diveq_by_scalar_operator") {
     CHECK(a.y == a_y / c);
     CHECK(a.z == a_z / c);
 }
+
+TEST_CASE("Vec: operator [] const") {
+    int x = 5;
+    int y = 6;
+    int z = 7;
+
+    Vec3i a(x, y, z);
+    CHECK(x == a[0]);
+    CHECK(y == a[1]);
+    CHECK(z == a[2]);
+}
+
+TEST_CASE("Vec: operator []") {
+    int x = 5;
+    int y = 6;
+    int z = 7;
+
+    Vec3i a(x, y, z);
+    a[0] = 1;
+    a[1] = 2;
+    a[2] = 3;
+    CHECK(1 == a[0]);
+    CHECK(2 == a[1]);
+    CHECK(3 == a[2]);
+}

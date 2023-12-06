@@ -21,7 +21,7 @@ class Vec {
         }
     }
 
-    constexpr T &operator[](int i) const { return vals[i]; }
+    constexpr T operator[](int i) const { return vals[i]; }
     constexpr T &operator[](int i) { return vals[i]; }
 
     constexpr T dot(const Vec<T, Dim, LenT> &rhs) const {
