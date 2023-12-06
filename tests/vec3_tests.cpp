@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest/doctest.h"
-#include "vector.hpp"
 #include "tests_common.hpp"
+#include "vector.hpp"
 
 using namespace cml;
 
@@ -11,9 +11,9 @@ TEST_CASE_TEMPLATE("Vec3: test_constructor", T, ARITHMETIC_TYPES) {
     T z = 7;
 
     Vec3<T> a(x, y, z);
-    CHECK(x == a.x);
-    CHECK(y == a.y);
-    CHECK(z == a.z);
+    CHECK(x == a.x());
+    CHECK(y == a.y());
+    CHECK(z == a.z());
 }
 
 TEST_CASE_TEMPLATE("Vec3: test_copy", T, ARITHMETIC_TYPES) {
@@ -23,10 +23,10 @@ TEST_CASE_TEMPLATE("Vec3: test_copy", T, ARITHMETIC_TYPES) {
 
     Vec3<T> a(x, y, z);
     Vec3<T> b = a;
-    b.x = 4;
-    CHECK(a.x != b.x);
-    CHECK(b.y == a.y);
-    CHECK(b.z == a.z);
+    b.x() = 4;
+    CHECK(a.x() != b.x());
+    CHECK(b.y() == a.y());
+    CHECK(b.z() == a.z());
 }
 
 TEST_CASE_TEMPLATE("Vec3: test_dot_product", T, ARITHMETIC_TYPES) {
@@ -79,9 +79,9 @@ TEST_CASE_TEMPLATE("Vec3: unary_minus_operator", T, ARITHMETIC_TYPES) {
     Vec3<T> a(x, y, z);
     auto b = -a;
 
-    CHECK(-x == b.x);
-    CHECK(-y == b.y);
-    CHECK(-z == b.z);
+    CHECK(-x == b.x());
+    CHECK(-y == b.y());
+    CHECK(-z == b.z());
 }
 
 TEST_CASE_TEMPLATE("Vec3: plus_operator", T, ARITHMETIC_TYPES) {
@@ -96,9 +96,9 @@ TEST_CASE_TEMPLATE("Vec3: plus_operator", T, ARITHMETIC_TYPES) {
     Vec3<T> b(b_x, b_y, b_z);
     auto c = a + b;
 
-    CHECK(a_x + b_x == c.x);
-    CHECK(a_y + b_y == c.y);
-    CHECK(a_z + b_z == c.z);
+    CHECK(a_x + b_x == c.x());
+    CHECK(a_y + b_y == c.y());
+    CHECK(a_z + b_z == c.z());
 }
 
 TEST_CASE_TEMPLATE("Vec3: minus_operator", T, ARITHMETIC_TYPES) {
@@ -113,9 +113,9 @@ TEST_CASE_TEMPLATE("Vec3: minus_operator", T, ARITHMETIC_TYPES) {
     Vec3<T> b(b_x, b_y, b_z);
     auto c = a - b;
 
-    CHECK(a_x - b_x == c.x);
-    CHECK(a_y - b_y == c.y);
-    CHECK(a_z - b_z == c.z);
+    CHECK(a_x - b_x == c.x());
+    CHECK(a_y - b_y == c.y());
+    CHECK(a_z - b_z == c.z());
 }
 
 TEST_CASE_TEMPLATE("Vec3: equals_operator", T, ARITHMETIC_TYPES) {
@@ -146,9 +146,9 @@ TEST_CASE_TEMPLATE("Vec3: pluseq_operator", T, ARITHMETIC_TYPES) {
 
     a += b;
 
-    CHECK(a.x == a_x + b_x);
-    CHECK(a.y == a_y + b_y);
-    CHECK(a.z == a_z + b_z);
+    CHECK(a.x() == a_x + b_x);
+    CHECK(a.y() == a_y + b_y);
+    CHECK(a.z() == a_z + b_z);
 }
 
 TEST_CASE_TEMPLATE("Vec3: minuseq_operator", T, ARITHMETIC_TYPES) {
@@ -164,9 +164,9 @@ TEST_CASE_TEMPLATE("Vec3: minuseq_operator", T, ARITHMETIC_TYPES) {
 
     a -= b;
 
-    CHECK(a.x == a_x - b_x);
-    CHECK(a.y == a_y - b_y);
-    CHECK(a.z == a_z - b_z);
+    CHECK(a.x() == a_x - b_x);
+    CHECK(a.y() == a_y - b_y);
+    CHECK(a.z() == a_z - b_z);
 }
 
 TEST_CASE_TEMPLATE("Vec3: mult_by_scalar_operator", T, ARITHMETIC_TYPES) {
@@ -178,9 +178,9 @@ TEST_CASE_TEMPLATE("Vec3: mult_by_scalar_operator", T, ARITHMETIC_TYPES) {
     Vec3<T> a(a_x, a_y, a_z);
     auto b = a * c;
 
-    CHECK(b.x == a_x * c);
-    CHECK(b.y == a_y * c);
-    CHECK(b.z == a_z * c);
+    CHECK(b.x() == a_x * c);
+    CHECK(b.y() == a_y * c);
+    CHECK(b.z() == a_z * c);
 }
 
 TEST_CASE_TEMPLATE("Vec3: div_by_scalar_operator", T, ARITHMETIC_TYPES) {
@@ -192,9 +192,9 @@ TEST_CASE_TEMPLATE("Vec3: div_by_scalar_operator", T, ARITHMETIC_TYPES) {
     Vec3<T> a(a_x, a_y, a_z);
     auto b = a / c;
 
-    CHECK(b.x == a_x / c);
-    CHECK(b.y == a_y / c);
-    CHECK(b.z == a_z / c);
+    CHECK(b.x() == a_x / c);
+    CHECK(b.y() == a_y / c);
+    CHECK(b.z() == a_z / c);
 }
 
 TEST_CASE_TEMPLATE("Vec3: multeq_by_scalar_operator", T, ARITHMETIC_TYPES) {
@@ -206,9 +206,9 @@ TEST_CASE_TEMPLATE("Vec3: multeq_by_scalar_operator", T, ARITHMETIC_TYPES) {
     Vec3<T> a(a_x, a_y, a_z);
     a *= c;
 
-    CHECK(a.x == a_x * c);
-    CHECK(a.y == a_y * c);
-    CHECK(a.z == a_z * c);
+    CHECK(a.x() == a_x * c);
+    CHECK(a.y() == a_y * c);
+    CHECK(a.z() == a_z * c);
 }
 
 TEST_CASE_TEMPLATE("Vec3: diveq_by_scalar_operator", T, ARITHMETIC_TYPES) {
@@ -220,8 +220,7 @@ TEST_CASE_TEMPLATE("Vec3: diveq_by_scalar_operator", T, ARITHMETIC_TYPES) {
     Vec3<T> a(a_x, a_y, a_z);
     a /= c;
 
-    CHECK(a.x == a_x / c);
-    CHECK(a.y == a_y / c);
-    CHECK(a.z == a_z / c);
+    CHECK(a.x() == a_x / c);
+    CHECK(a.y() == a_y / c);
+    CHECK(a.z() == a_z / c);
 }
-
