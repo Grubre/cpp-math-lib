@@ -63,9 +63,9 @@ class Vec {
     }
 
     constexpr Vec interpolated(LenT scalar) const {
-        Vec<LenT, Dim, LenT> interpolated;
+        Vec interpolated;
         for (int i = 0; i < Dim; i++) {
-            interpolated.vals[i] = vals[i] * scalar;
+            interpolated[i] = vals[i] * scalar;
         }
         return interpolated;
     }
@@ -137,6 +137,8 @@ class Vec {
     Iterator rend() const { return Iterator(vals.rend()); }
     Iterator crbegin() { return Iterator(vals.crbegin()); }
     Iterator crend() const { return Iterator(vals.crend()); }
+
+    using LengthType = LenT;
 
   protected:
     std::array<T, Dim> vals;
