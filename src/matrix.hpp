@@ -95,7 +95,8 @@ class Matrix {
 
     // TODO: Consider transposing rhs to improve cache locality
     template <unsigned RHCols>
-    Matrix<Rows, RHCols, T> operator*(const Matrix<Cols, RHCols, T> &rhs) {
+    Matrix<Rows, RHCols, T>
+    operator*(const Matrix<Cols, RHCols, T> &rhs) const {
         Matrix<Rows, RHCols, T> r;
         for (auto col = 0; col < RHCols; col++) {
             for (auto row = 0; row < Rows; row++) {

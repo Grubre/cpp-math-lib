@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+#include "vec_mat_operations.hpp"
 #include "vector.hpp"
 #include <iostream>
 
@@ -16,11 +17,12 @@ int main() {
     std::cout << A << std::endl;
     std::cout << x << std::endl;
 
-    auto test = *(cml::Matrix<3, 1, double> *)&x;
+    auto test = *(cml::ColumnVec<double, 3> *)&x;
 
     std::cout << test << std::endl;
 
     std::cout << C * test << std::endl;
+    std::cout << C * x << std::endl;
 
     return 0;
 }
