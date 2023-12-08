@@ -26,6 +26,22 @@ TEST_CASE("Matrix: initializer list constructor") {
     }
 }
 
+TEST_CASE("Matrix: iterator") {
+    Matrix<3, 2, int> a{0, 1, 2, 3, 4, 5};
+
+    for (auto &x : a) {
+        x *= 2;
+    }
+
+    auto it = a.begin();
+    for (auto i = 0u; i < 3; i++) {
+        for (auto j = 0u; j < 2; j++) {
+            CHECK(*it == i * 4 + 2 * j);
+            it++;
+        }
+    }
+}
+
 TEST_CASE("Matrix: copy") {
     constexpr auto ROWS = 3;
     constexpr auto COLS = 2;

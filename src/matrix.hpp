@@ -119,6 +119,50 @@ class Matrix {
         return result;
     }
 
+    class Iterator {
+      public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = T;
+        using difference_type = std::ptrdiff_t;
+        using pointer = T *;
+        using reference = T &;
+
+        Iterator(pointer ptr) : m_ptr(ptr) {}
+
+        reference operator*() const { return *m_ptr; }
+        pointer operator->() { return m_ptr; }
+
+        Iterator &operator++() {
+            m_ptr++;
+            return *this;
+        }
+
+        Iterator operator++(int) {
+            Iterator temp = *this;
+            ++(*this);
+            return temp;
+        }
+
+        friend bool operator==(const Iterator &a, const Iterator &b) {
+            return a.m_ptr == b.m_ptr;
+        };
+        friend bool operator!=(const Iterator &a, const Iterator &b) {
+            return a.m_ptr != b.m_ptr;
+        };
+
+      private:
+        pointer m_ptr;
+    };
+
+    Iterator begin() { return Iterator(vals.begin()); }
+    Iterator end() { return Iterator(vals.end()); }
+    Iterator cbegin() const { return Iterator(vals.cbegin()); }
+    Iterator cend() const { return Iterator(vals.cend()); }
+    Iterator rbegin() { return Iterator(vals.rbegin()); }
+    Iterator rend() const { return Iterator(vals.rend()); }
+    Iterator crbegin() { return Iterator(vals.crbegin()); }
+    Iterator crend() const { return Iterator(vals.crend()); }
+
     static Matrix identity()
         requires SquareMatrix<Matrix<Rows, Cols, T>>
     {
@@ -149,4 +193,5 @@ std::ostream &operator<<(std::ostream &os, const Matrix<Rows, Cols, T> &m) {
 
 template <arithmetic T = default_type> using Mat4 = Matrix<4, 4, T>;
 template <arithmetic T = default_type> using Mat3 = Matrix<3, 3, T>;
+template <arithmetic T = default_type> using Mat2 = Matrix<2, 2, T>;
 } // namespace cml
