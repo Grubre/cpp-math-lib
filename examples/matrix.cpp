@@ -32,6 +32,10 @@ int main() {
     cml::Vec3<double> y;
     std::iota(y.begin(), y.end(), 0);
 
+    cml::Matrix<4, 4> E;
+
+    cml::rotate(E, 0.0, cml::Vec3d(0.0, 0.0, 0.0));
+
     std::cout << D;
     std::cout << y << std::endl;
     std::cout << D * y;
