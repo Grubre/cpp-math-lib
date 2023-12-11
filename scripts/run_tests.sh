@@ -1,4 +1,4 @@
 cd build
-cmake ..
+cmake .. -DENABLE_TESTS=ON -DENABLE_EXAMPLES=OFF
 cmake --build .
 ctest $1

@@ -1,4 +1,4 @@
 cd build
-cmake ..
+cmake .. -DENABLE_TESTS=OFF -DENABLE_EXAMPLES=ON
 cmake --build .
 ./examples/$1
