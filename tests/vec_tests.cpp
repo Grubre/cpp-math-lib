@@ -9,40 +9,69 @@ using namespace cml;
 
 #define TT typename T::Type
 
-TEST_CASE_TEMPLATE("Vec: default constructor", T, ARITHMETIC_TYPES_AND_DIMS) {
-    Vec<TT, T::dim> a;
-    for (auto i = 0u; i < T::dim; i++) {
-        CHECK(a[i] == TT(0));
+TEST_CASE_TEMPLATE("Vec: constructor", T, ARITHMETIC_TYPES_AND_DIMS) {
+    SUBCASE("Default constructor") {
+        Vec<TT, T::dim> a;
+        for (auto i = 0u; i < T::dim; i++) {
+            CHECK(a[i] == TT(0));
+        }
+    }
+
+    SUBCASE("Copy constructor") {
+        Vec<TT, T::dim> a;
+        std::iota(a.begin(), a.end(), TT(0));
+
+        Vec<TT, T::dim> b = a;
+        for (auto i = 0u; i < T::dim; i++) {
+            CHECK(a[i] == b[i]);
+        }
+    }
+
+    SUBCASE("Constructor from lower dimension vector") {
+        Vec<TT, T::dim> a;
+        std::iota(a.begin(), a.end(), TT(0));
+
+        Vec<TT, T::dim + 1> b(a);
+        for (auto i = 0u; i < T::dim; i++) {
+            CHECK(a[i] == b[i]);
+        }
+
+        CHECK(b.dimension() == T::dim + 1);
+    }
+
+    SUBCASE("Constructor from higher dimension vector") {
+        Vec<TT, T::dim> a;
+        std::iota(a.begin(), a.end(), TT(0));
+
+        Vec<TT, T::dim - 1> b(a);
+        for (auto i = 0u; i < T::dim - 1; i++) {
+            CHECK(a[i] == b[i]);
+        }
+
+        CHECK(b.dimension() == T::dim - 1);
     }
 }
 
-TEST_CASE_TEMPLATE("Vec: copy", T, ARITHMETIC_TYPES_AND_DIMS) {
-    Vec<TT, T::dim> a;
-    std::iota(a.begin(), a.end(), TT(0));
-
-    Vec<TT, T::dim> b = a;
-    for (auto i = 0u; i < T::dim; i++) {
-        CHECK(a[i] == b[i]);
+TEST_CASE_TEMPLATE("Vec: initializer_list constructor", T, ARITHMETIC_TYPES) {
+    SUBCASE("2d") {
+        Vec<T, 2> a = {T(0), T(1)};
+        CHECK(T(0) == a[0]);
+        CHECK(T(1) == a[1]);
     }
-}
 
-TEST_CASE_TEMPLATE("Vec: constructor from lower dim", T, ARITHMETIC_TYPES_AND_DIMS) {
-    Vec<TT, T::dim> a;
-    std::iota(a.begin(), a.end(), TT(0));
-
-    Vec<TT, T::dim + 1> b(a);
-    for (auto i = 0u; i < T::dim; i++) {
-        CHECK(a[i] == b[i]);
+    SUBCASE("3d") {
+        Vec<T, 3> a = {T(0), T(1), T(2)};
+        CHECK(T(0) == a[0]);
+        CHECK(T(1) == a[1]);
+        CHECK(T(2) == a[2]);
     }
-}
 
-TEST_CASE_TEMPLATE("Vec: constructor from higher dim", T, ARITHMETIC_TYPES_AND_DIMS) {
-    Vec<TT, T::dim> a;
-    std::iota(a.begin(), a.end(), TT(0));
-
-    Vec<TT, T::dim - 1> b(a);
-    for (auto i = 0u; i < T::dim - 1; i++) {
-        CHECK(a[i] == b[i]);
+    SUBCASE("4d") {
+        Vec<T, 4> a = {T(0), T(1), T(2), T(3)};
+        CHECK(T(0) == a[0]);
+        CHECK(T(1) == a[1]);
+        CHECK(T(2) == a[2]);
+        CHECK(T(3) == a[3]);
     }
 }
 
@@ -58,27 +87,6 @@ TEST_CASE_TEMPLATE("Vec: operator []", T, ARITHMETIC_TYPES_AND_DIMS) {
     for (auto i = 0u; i < T::dim; i++) {
         CHECK(values[i] == a[i]);
     }
-}
-
-TEST_CASE_TEMPLATE("Vec: initializer_list constructor", T, ARITHMETIC_TYPES) {
-    Vec<T, 2> a = {T(0), T(1)};
-    CHECK(T(0) == a[0]);
-    CHECK(T(1) == a[1]);
-}
-
-TEST_CASE_TEMPLATE("Vec: initializer_list constructor", T, ARITHMETIC_TYPES) {
-    Vec<T, 3> a = {T(0), T(1), T(2)};
-    CHECK(T(0) == a[0]);
-    CHECK(T(1) == a[1]);
-    CHECK(T(2) == a[2]);
-}
-
-TEST_CASE_TEMPLATE("Vec: initializer_list constructor", T, ARITHMETIC_TYPES) {
-    Vec<T, 4> a = {T(0), T(1), T(2), T(3)};
-    CHECK(T(0) == a[0]);
-    CHECK(T(1) == a[1]);
-    CHECK(T(2) == a[2]);
-    CHECK(T(3) == a[3]);
 }
 
 TEST_CASE_TEMPLATE("Vec: Accessors", T, ARITHMETIC_TYPES) {
@@ -159,7 +167,7 @@ TEST_CASE_TEMPLATE("Vec: Interpolated", T, ARITHMETIC_TYPES_AND_DIMS) {
     }
 }
 
-TEST_CASE_TEMPLATE("Vec: Multiplciation", T, ARITHMETIC_TYPES_AND_DIMS) {
+TEST_CASE_TEMPLATE("Vec: Multiplication", T, ARITHMETIC_TYPES_AND_DIMS) {
     Vec<TT, T::dim> a;
     std::iota(a.begin(), a.end(), TT(0));
 

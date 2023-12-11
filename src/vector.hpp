@@ -31,6 +31,8 @@ class Vec {
         requires(Dim == 3)
         : vals{x, y, z} {}
 
+    constexpr unsigned int dimension() const { return Dim; }
+
     constexpr T operator[](int i) const { return vals[i]; }
     constexpr T &operator[](int i) { return vals[i]; }
 
