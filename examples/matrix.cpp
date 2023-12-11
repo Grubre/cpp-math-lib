@@ -2,6 +2,7 @@
 #include "vec_mat_operations.hpp"
 #include "vector.hpp"
 #include <iostream>
+#include <numeric>
 
 int main() {
     cml::Matrix<2, 3, double> A = {0., 4., -2., -4., -3., 0.};
@@ -23,6 +24,17 @@ int main() {
 
     std::cout << C * test << std::endl;
     std::cout << C * x << std::endl;
+
+    std::cout << "========================================\n";
+
+    cml::Matrix<3, 3> D;
+    std::iota(D.begin(), D.end(), 0);
+    cml::Vec3<double> y;
+    std::iota(y.begin(), y.end(), 0);
+
+    std::cout << D;
+    std::cout << y << std::endl;
+    std::cout << D * y;
 
     return 0;
 }

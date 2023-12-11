@@ -11,17 +11,39 @@ using namespace cml;
 
 #define TT typename T::Type
 
-TEST_CASE_TEMPLATE("Vec Matrix Operations: operator *", T,
-                   ARITHMETIC_TYPES_AND_DIMS) {
-    Matrix<T::dim, T::dim, TT> A;
-    std::iota(A.begin(), A.end(), TT(0));
+TEST_CASE_TEMPLATE("Vec Matrix Operations: operator * (LHS Mat, RHS vec)", T, ARITHMETIC_TYPES_AND_DIMS) {
+    SUBCASE("Zero Matrix and Non-Zero Vector") {
+        Matrix<T::dim, T::dim, TT> A;
 
-    Vec<TT, T::dim> x;
-    std::iota(x.begin(), x.end(), TT(0));
+        Vec<TT, T::dim> x;
+        std::iota(x.begin(), x.end(), TT(0));
 
-    Vec<TT, T::dim> b = A * x;
+        auto b = A * x;
 
-    for (auto i = 0u; i < T::dim; i++) {
-        CHECK(b[i] == TT(2 * i + 1));
+        for (auto i = 0u; i < T::dim; i++) {
+            CHECK(b[i] == TT(0));
+        }
+    }
+
+    SUBCASE("Identity Matrix and Arbitrary Vector") {
+        Matrix<T::dim, T::dim, TT> A = Matrix<T::dim, T::dim, TT>::identity();
+        Vec<TT, T::dim> x;
+        std::iota(x.begin(), x.end(), TT(1));
+
+        Vec<TT, T::dim> b = A * x;
+        for (auto i = 0u; i < T::dim; i++) {
+            CHECK(b[i] == x[i]);
+        }
+    }
+
+    SUBCASE("Arbitrary Matrix and Zero Vector") {
+        Matrix<T::dim, T::dim, TT> A;
+        std::iota(A.begin(), A.end(), TT(1));
+        Vec<TT, T::dim> x; 
+
+        Vec<TT, T::dim> b = A * x;
+        for (auto i = 0u; i < T::dim; i++) {
+            CHECK(b[i] == TT(0));
+        }
     }
 }
