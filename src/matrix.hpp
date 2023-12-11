@@ -195,4 +195,10 @@ std::ostream &operator<<(std::ostream &os, const Matrix<Rows, Cols, T> &m) {
 template <arithmetic T = default_type> using Mat4 = Matrix<4, 4, T>;
 template <arithmetic T = default_type> using Mat3 = Matrix<3, 3, T>;
 template <arithmetic T = default_type> using Mat2 = Matrix<2, 2, T>;
+using Mat4d = Mat4<double>;
+using Mat4f = Mat4<float>;
+using Mat3d = Mat3<double>;
+using Mat3f = Mat3<float>;
+using Mat2d = Mat2<double>;
+using Mat2f = Mat2<float>;
 } // namespace cml
