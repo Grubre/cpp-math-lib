@@ -47,6 +47,14 @@ class Vec {
         return sum;
     }
 
+    template <arithmetic T2, std::floating_point LenT2>
+        requires(std::is_convertible_v<T2, T> && Dim == 3)
+    constexpr Vec cross(const Vec<T2, Dim, LenT2> &rhs) const {
+        return {vals[1] * rhs[2] - vals[2] * rhs[1],
+                vals[2] * rhs[0] - vals[0] * rhs[2],
+                vals[0] * rhs[1] - vals[1] * rhs[0]};
+    }
+
     constexpr LenT length_sq() const {
         LenT sum = 0;
         for (int i = 0; i < Dim; i++) {

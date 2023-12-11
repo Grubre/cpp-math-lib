@@ -43,6 +43,26 @@ TEST_CASE_TEMPLATE("Vec3: test_dot_product", T, ARITHMETIC_TYPES) {
     CHECK(a_x * b_x + a_y * b_y + a_z * b_z == a.dot(b));
 }
 
+TEST_CASE_TEMPLATE("Vec3: cross product", T, ARITHMETIC_TYPES) {
+    T a_x = 5;
+    T a_y = 6;
+    T a_z = 7;
+
+    T b_x = 3;
+    T b_y = 3;
+    T b_z = 3;
+
+    Vec3<T> a(a_x, a_y, a_z);
+    Vec3<T> b(b_x, b_y, b_z);
+    auto c = a.cross(b);
+
+    CHECK(a_y * b_z - a_z * b_y == c.x());
+    CHECK(a_z * b_x - a_x * b_z == c.y());
+    CHECK(a_x * b_y - a_y * b_x == c.z());
+    CHECK(doctest::Approx(a.dot(c)) == 0.);
+    CHECK(doctest::Approx(b.dot(c)) == 0.);
+}
+
 TEST_CASE_TEMPLATE("Vec3: test_len_sq", T, ARITHMETIC_TYPES) {
     T x = 5;
     T y = 6;
