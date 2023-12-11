@@ -1,6 +1,6 @@
 #pragma once
 
-#define ARITHMETIC_TYPES int, double, float, long double, unsigned int
+#define ARITHMETIC_TYPES int, double, float, long double
 
 template <typename T, unsigned int Dim> struct TypeDimPair {
     using Type = T;
@@ -32,11 +32,5 @@ template <typename T, unsigned int Dim> struct TypeDimPair {
     TypeDimPair<long double, 4>,\
     TypeDimPair<long double, 5>,\
     TypeDimPair<long double, 10>,\
-    TypeDimPair<long double, 20>,\
-    TypeDimPair<unsigned int, 2>,\
-    TypeDimPair<unsigned int, 3>,\
-    TypeDimPair<unsigned int, 4>,\
-    TypeDimPair<unsigned int, 5>,\
-    TypeDimPair<unsigned int, 10>,\
-    TypeDimPair<unsigned int, 20>
+    TypeDimPair<long double, 20>
 // clang-format on

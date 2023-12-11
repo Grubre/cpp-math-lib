@@ -5,6 +5,7 @@
 #include <concepts>
 #include <iostream>
 #include <ostream>
+#include <type_traits>
 
 namespace cml {
 
@@ -36,10 +37,12 @@ class Vec {
     constexpr T operator[](int i) const { return vals[i]; }
     constexpr T &operator[](int i) { return vals[i]; }
 
-    constexpr T dot(const Vec &rhs) const {
+    template <arithmetic T2, std::floating_point LenT2>
+        requires(std::is_convertible_v<T2, T>)
+    constexpr T dot(const Vec<T2, Dim, LenT2> &rhs) const {
         T sum = 0;
         for (int i = 0; i < Dim; i++) {
-            sum += vals[i] * rhs.vals[i];
+            sum += vals[i] * rhs[i];
         }
         return sum;
     }
@@ -54,7 +57,9 @@ class Vec {
 
     constexpr LenT length() const { return std::sqrt(length_sq()); }
 
-    constexpr Vec<LenT, Dim, LenT> normalized() const {
+    template <arithmetic T2 = LenT>
+        requires(std::is_floating_point_v<T2>)
+    constexpr Vec<T2, Dim, LenT> normalized() const {
         LenT len = length();
         Vec<LenT, Dim, LenT> normalized;
         for (int i = 0; i < Dim; i++) {
@@ -146,7 +151,9 @@ class Vec {
 };
 
 template <arithmetic T, unsigned int Dim, std::floating_point LenT>
-Vec<T, Dim, LenT> operator-(Vec<T, Dim, LenT> rhs) {
+Vec<T, Dim, LenT> operator-(Vec<T, Dim, LenT> rhs)
+    requires(std::is_signed<T>() == true)
+{
     for (auto i = 0u; i < Dim; i++) {
         rhs[i] = -rhs[i];
     }
